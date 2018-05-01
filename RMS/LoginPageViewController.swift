@@ -13,6 +13,7 @@ class LoginPageViewController: UIViewController {
 
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,7 +31,10 @@ class LoginPageViewController: UIViewController {
         if let email = emailTextField.text, let password = passwordTextField.text {
             Auth.auth().signIn(withEmail: email, password: password) { user, error in
                 if error == nil && user != nil {
-                    print("Logged in!")
+                    self.dismiss(animated: false, completion: nil)
+                    // Returns to Menu View and since Menu View already has a code that checks if I am already signed in, it will return me to Home View
+                } else {
+                    print("Error creating user: \(error!.localizedDescription)")
                 }
             }
         }
