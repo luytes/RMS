@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import Firebase
 
-class ViewController: UIViewController {
+class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +22,10 @@ class ViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        self.performSegue(withIdentifier: "loginView", sender: self)
+        super.viewDidAppear(animated)
+        if let user = Auth.auth().currentUser {
+            self.performSegue(withIdentifier: "homeView", sender: self)
+        }
     }
     
 }

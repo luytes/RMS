@@ -14,6 +14,7 @@ class SignUpPageViewController: UIViewController {
     @IBOutlet weak var userEmailTextField: UITextField!
     @IBOutlet weak var userPasswordTextField: UITextField!
     @IBOutlet weak var repeatPasswordTextField: UITextField!
+    @IBOutlet weak var userNameTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,12 +33,23 @@ class SignUpPageViewController: UIViewController {
     
     // MARK: ACTION
     @IBAction func signUpButtonTapped(_ sender: Any) {
-        if let userEmail = userEmailTextField.text, let userPassword = userPasswordTextField.text {
+        if let userEmail = userEmailTextField.text, let userPassword = userPasswordTextField.text, let userName = userNameTextField.text {
             
             Auth.auth().createUser(withEmail: userEmail, password: userPassword) { user, error in
                 
                 if error == nil && user != nil {
                     print("Successful!")
+                    
+                    // Create Username
+                    let changeRequest = Auth.auth().currentUser?.createProfileChangeRequest()
+                    changeRequest?.displayName = userName
+                    changeRequest?.commitChanges { error in
+                        if error == nil {
+                            print("Username changed")
+                            self.dismiss(animated: false, completion: nil)
+                        }
+                    }
+                    
                 } else {
                     print("Error creating user: \(error!.localizedDescription)")
                 }
